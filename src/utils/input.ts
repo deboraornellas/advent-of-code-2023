@@ -1,11 +1,11 @@
 const getDelimiter = (input: string) => {
-  if (input.includes(',')) {
-    return ',';
+  if (input.includes(",")) {
+    return ",";
   }
-  if (input.includes('\n')) {
-    return '\n';
+  if (input.includes("\n")) {
+    return "\n";
   }
-  return '';
+  return "";
 };
 
 const mapToNumberIfNecessary = (input: string[]) => {
@@ -19,10 +19,10 @@ export const parseInput = (
   input: string,
   delimiter?: string,
   trimmed: boolean = true,
-  parsedToNumber: boolean = true,
+  parsedToNumber: boolean = true
 ) => {
   let inputArray: string[] | number[] = input.split(
-    delimiter || getDelimiter(input),
+    delimiter || getDelimiter(input)
   );
   if (trimmed) {
     inputArray = inputArray.map((e) => e.trim());
