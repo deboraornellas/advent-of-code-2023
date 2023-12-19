@@ -1,6 +1,6 @@
 export const findStartOfMessageMarker = (
   input: string[],
-  numberOfCharacters: number,
+  numberOfCharacters: number
 ) => {
   let unique: string[] = [];
   let counter = 0;
@@ -19,18 +19,18 @@ export const findStartOfMessageMarker = (
 };
 
 export const parseCratesAsArrays = (crateInput: string) => {
-  const split = crateInput.split('\n');
-  const lastRow = split.pop() || '';
+  const split = crateInput.split("\n");
+  const lastRow = split.pop() || "";
 
-  const numberOfCrates = lastRow.trim().split('  ').length;
+  const numberOfCrates = lastRow.trim().split("  ").length;
 
   let matrix: string[][] = [[]];
   for (let i = numberOfCrates - 1; i >= 0; i--) {
     if (!split[i]) continue;
-    const line = split[i].replace(/\x20{4}/g, ' _').replace(/\x20{1}/g, '');
-    const splitLine = line.replace(/\[/g, '').replace(/\]/g, '').split('');
+    const line = split[i].replace(/\x20{4}/g, " _").replace(/\x20{1}/g, "");
+    const splitLine = line.replace(/\[/g, "").replace(/\]/g, "").split("");
     splitLine.forEach((crate, i) => {
-      if (crate !== '_') {
+      if (crate !== "_") {
         if (matrix[i]) {
           matrix[i].push(crate);
         } else matrix[i] = [crate];
@@ -42,14 +42,14 @@ export const parseCratesAsArrays = (crateInput: string) => {
 
 export const parseMoveCommands = (commandInput: string) => {
   const commands: number[][] = [];
-  commandInput.split('\n').forEach((command) => {
+  commandInput.split("\n").forEach((command) => {
     commands.push(
       command
-        .replace('move ', '')
-        .replace('from ', '')
-        .replace('to ', '')
-        .split(' ')
-        .map((x) => Number(x)),
+        .replace("move ", "")
+        .replace("from ", "")
+        .replace("to ", "")
+        .split(" ")
+        .map((x) => Number(x))
     );
   });
   return commands;
@@ -57,7 +57,7 @@ export const parseMoveCommands = (commandInput: string) => {
 
 export const compareArrays = (
   arr1: number[] | string[],
-  arr2: number[] | string[],
+  arr2: number[] | string[]
 ) => {
   return JSON.stringify(arr1) === JSON.stringify(arr2);
 };
@@ -66,7 +66,7 @@ export const findAllArrayCombinations = (
   arr: string[],
   index: number,
   out: string[][],
-  onlyHalf?: boolean,
+  onlyHalf?: boolean
 ): string[][] => {
   const n = arr.length;
   if (index >= n) return out;
@@ -112,4 +112,24 @@ export const getPastIndexFromArray = <T>(arr: T[], index: number): number => {
     return arr.length - 1;
   }
   return index - 1;
+};
+
+export const binaryMinSearch = (
+  arr: number[],
+  logic: (val: number) => number,
+  min: number = Infinity
+): number => {
+  const logicBeginning = logic(arr[0]);
+  const logicEnd = logic(arr[arr.length - 1]);
+  // console.log(arr, logicBeginning, logicEnd);
+  if (logicEnd - logicBeginning === arr.length - 1) {
+    return Math.min(min, logicBeginning);
+  }
+
+  min = Math.min(min, binaryMinSearch(arr.slice(arr.length / 2), logic, min));
+  min = Math.min(
+    min,
+    binaryMinSearch(arr.slice(0, arr.length / 2), logic, min)
+  );
+  return min;
 };
